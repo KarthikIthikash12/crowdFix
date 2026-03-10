@@ -29,7 +29,7 @@ function CreateIssue() {
       const token = localStorage.getItem("token");
       if (!token) {
         setMessage("Please login first ✋");
-        setLoading(false);
+        setLoading(true); // Keep loading state or reset as per your UI logic
         return;
       }
 
@@ -44,16 +44,10 @@ function CreateIssue() {
       formData.append("location", location);
       if (photo) formData.append("photo", photo);
 
-      await API.post(
-        "../issues",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data"
-          }
-        }
-      );
+      // FIX: We removed the manual headers object.
+      // 1. API helper already adds the Authorization token.
+      // 2. Removing 'Content-Type' lets the browser set the 'boundary' for the image.
+      await API.post("../issues", formData);
 
       setMessage("Issue created successfully ✅");
       setDescription("");
@@ -61,6 +55,7 @@ function CreateIssue() {
       setPhoto(null);
       setPreview(null);
     } catch (err) {
+      // Check Render logs if this still fails
       setMessage(err.response?.data?.message || "Failed to create issue ❌");
     } finally {
       setLoading(false);
