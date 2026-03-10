@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://crowdfix-backend-z5cn.onrender.com", 
+  baseURL: "https://crowdfix-backend-z5cn.onrender.com/api", 
 });
 
 API.interceptors.request.use((req) => {
