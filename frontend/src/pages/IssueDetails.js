@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+
+import API from "../api"; 
 
 function IssueDetails() {
   const { id } = useParams();
@@ -21,7 +22,7 @@ function IssueDetails() {
   const storedUserId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
-  const BASE_URL = "http://localhost:5000/issues"; 
+  const BASE_URL = "../issues"; 
 
   const getAuthHeader = useCallback(() => ({
     headers: { Authorization: `Bearer ${token}` },
@@ -33,7 +34,7 @@ function IssueDetails() {
 
   const fetchIssue = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/${id}`);
+      const res = await API.get(`${BASE_URL}/${id}`);
       setIssue(res.data.issue || res.data); 
       setComments(res.data.comments || []);
     } catch (err) {
@@ -47,7 +48,7 @@ function IssueDetails() {
     if (!token) return alert("Please login first! ✋");
     try {
 
-      const res = await axios.patch(`${BASE_URL}/${id}/upvote`, {}, getAuthHeader());
+      const res = await API.patch(`${BASE_URL}/${id}/upvote`, {}, getAuthHeader());
       setIssue(res.data);
     } catch (err) {
       console.error(err.response?.data);
@@ -57,7 +58,7 @@ function IssueDetails() {
 
   const handleToggleResolved = async () => {
     try {
-      const res = await axios.patch(`${BASE_URL}/${id}/resolve`, {}, getAuthHeader());
+      const res = await API.patch(`${BASE_URL}/${id}/resolve`, {}, getAuthHeader());
       setIssue(res.data);
       alert("Status updated! ✅");
     } catch (err) {
@@ -67,7 +68,7 @@ function IssueDetails() {
 
   const handleUpdateIssue = async () => {
     try {
-      const res = await axios.patch(`${BASE_URL}/${id}`, 
+      const res = await API.patch(`${BASE_URL}/${id}`, 
         { description: editedDescription, photo: editedPhoto }, 
         getAuthHeader()
       );
@@ -80,7 +81,7 @@ function IssueDetails() {
   const handleDeleteIssue = async () => {
     if (!window.confirm("Delete this report permanently?")) return;
     try {
-      await axios.delete(`${BASE_URL}/${id}`, getAuthHeader());
+      await API.delete(`${BASE_URL}/${id}`, getAuthHeader());
       navigate("/");
     } catch { alert("Delete failed"); }
   };
@@ -88,7 +89,7 @@ function IssueDetails() {
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
     try {
-      await axios.post(`${BASE_URL}/${id}/comments`, { text: newComment }, getAuthHeader());
+      await API.post(`${BASE_URL}/${id}/comments`, { text: newComment }, getAuthHeader());
       setNewComment("");
       fetchIssue(); 
     } catch { alert("Failed to post comment"); }
@@ -96,7 +97,7 @@ function IssueDetails() {
 
   const handleUpdateComment = async (commentId) => {
     try {
-      await axios.patch(`${BASE_URL}/${id}/comments/${commentId}`, 
+      await API.patch(`${BASE_URL}/${id}/comments/${commentId}`, 
         { text: editedCommentText }, 
         getAuthHeader()
       );
@@ -108,7 +109,7 @@ function IssueDetails() {
   const handleDeleteComment = async (commentId) => {
     if (!window.confirm("Delete comment?")) return;
     try {
-      await axios.delete(`${BASE_URL}/${id}/comments/${commentId}`, getAuthHeader());
+      await API.delete(`${BASE_URL}/${id}/comments/${commentId}`, getAuthHeader());
       fetchIssue();
     } catch { alert("Delete failed"); }
   };

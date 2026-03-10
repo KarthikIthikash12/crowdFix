@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API from "../api"; 
 
 function TrendingPanel() {
   const [trending, setTrending] = useState([]);
@@ -12,7 +13,7 @@ function TrendingPanel() {
 
   const fetchTrending = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/issues?sort=top&page=1&limit=5");
+      const res = await API.get("../issues?sort=top&page=1&limit=5");
       if (res.data.issues) setTrending(res.data.issues);
     } catch (err) {
       console.log("Trending error:", err.message);

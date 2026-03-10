@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import IssueCard from "../components/IssueCard";
+import IssueCard from "../components/IssueCard"; 
+import API from "../api"; 
 
 function MyIssues() {
   const [issues, setIssues] = useState([]);
@@ -13,8 +14,8 @@ function MyIssues() {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await axios.get(
-        "http://localhost:5000/issues/my",
+      const res = await API.get(
+        "../issues/my",
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -33,8 +34,8 @@ function MyIssues() {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.patch(
-        `http://localhost:5000/issues/${id}/upvote`,
+      await API.patch(
+        `../issues/${id}/upvote`,
         {},
         {
           headers: {

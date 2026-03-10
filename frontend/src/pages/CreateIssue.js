@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { formStyles as styles } from "../styles/formStyles";
+import API from "../api"; 
 
 function CreateIssue() {
   const [description, setDescription] = useState("");
@@ -43,8 +44,8 @@ function CreateIssue() {
       formData.append("location", location);
       if (photo) formData.append("photo", photo);
 
-      await axios.post(
-        "http://localhost:5000/issues",
+      await API.post(
+        "../issues",
         formData,
         {
           headers: {

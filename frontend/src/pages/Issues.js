@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
 import IssueCard from "../components/IssueCard";
 import { useLocation } from "react-router-dom";
+import API from "../api"; 
 
 function Issues() {
   const [issues, setIssues] = useState([]);
@@ -30,8 +31,8 @@ function Issues() {
       const sort = params.get("sort") || "recent";
       const searchQuery = params.get("search") || "";
 
-      const res = await axios.get(
-        `http://localhost:5000/issues?sort=${sort}&page=${page}&limit=6&search=${searchQuery}`
+      const res = await API.get(
+        `../issues?sort=${sort}&page=${page}&limit=6&search=${searchQuery}`
       );
 
       const fetchedIssues = res.data.issues;
@@ -63,7 +64,7 @@ function Issues() {
   const handleUpvote = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.patch(`http://localhost:5000/issues/${id}/upvote`, {}, {
+      const res = await API.patch(`../issues/${id}/upvote`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIssues(prev => prev.map(issue => 

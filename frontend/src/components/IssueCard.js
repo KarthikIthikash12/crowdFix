@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import API from "../api"; 
 
 function IssueCard({ issue, onUpvote }) {
   const [following, setFollowing] = useState(false);
@@ -16,8 +17,8 @@ function IssueCard({ issue, onUpvote }) {
       const headers = getAuthHeader();
       if (!headers.Authorization) { alert("Login required"); return; }
 
-      await axios.post(
-        `http://localhost:5000/users/${issue.createdBy?._id}/follow`,
+      await API.post(
+        `../users/${issue.createdBy?._id}/follow`,
         {},
         { headers }
       );
