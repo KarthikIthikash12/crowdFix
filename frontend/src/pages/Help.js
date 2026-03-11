@@ -15,7 +15,7 @@ function Help() {
     { q: "What happens when I upvote?", a: "Upvoting increases visibility. Higher upvote counts move issues to the 'Trending' section, signaling that it is a high-priority concern." },
     { q: "How do comments work?", a: "Users can comment on issues to provide updates or discuss solutions. You can also delete your own comments if needed." },
     { q: "Can I delete my reports?", a: "Yes. As the creator of an issue, you have full control. You can find the delete option on the specific issue's details page." },
-    { q: "Is my data safe?", a: "Absolutely. We only use your data to facilitate civic reporting. Your email is kept private; only your username and profile picture are visible." },
+    { q: "Is my data safe?", a: "Absolutely. We only use your data to facilitate civic reporting. Your email is kept private; only your username is visible." },
     { q: "Who can see my reports?", a: "All reports are public to the CrowdFix community to ensure transparency and collective action for community improvements." }
   ];
 
