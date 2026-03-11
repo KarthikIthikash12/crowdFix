@@ -93,7 +93,7 @@ function CreateIssue() {
           </div>
 
           <div style={localStyles.inputGroup}>
-            <label style={localStyles.label}>Upload Evidence (Optional)</label>
+            <label style={localStyles.label}>Upload Evidence</label>
             <div style={localStyles.fileUploadWrapper}>
               <input
                 type="file"

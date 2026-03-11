@@ -10,7 +10,7 @@ const toggleFAQ = (index) => {
 
   { 
     q: "How do I report an issue?", 
-    a: "Click the 'Create' button in the sidebar. You'll need to provide a clear description (at least 5 characters), specify the location, and you can optionally upload a photo to provide more context." 
+    a: "Click the 'Create' button in the sidebar. You'll need to provide a clear description (at least 5 characters), specify the location, and you must upload a photo to provide more context." 
   },
   { 
     q: "What kind of issues can I report?", 
