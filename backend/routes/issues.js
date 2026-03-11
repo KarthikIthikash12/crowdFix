@@ -69,7 +69,6 @@ res.status(200).json({
 });
 router.get("/my", authMiddleware, async(req, res) => {
     try {
-        // Add .populate() here to swap the ID for the actual user object
         const myIssues = await Issue.find({ createdBy: req.userId })
             .populate("createdBy", "username") 
             .sort({ createdAt: -1 });
@@ -114,8 +113,7 @@ router.patch("/:id/upvote", authMiddleware, async(req, res) => {
         }
 
         await issue.save(); 
-        
-        // FIX: Re-populate the user before sending to frontend
+      
         const updatedIssue = await Issue.findById(issue._id)
             .populate("createdBy", "username profilePic followers");
 
@@ -220,17 +218,16 @@ router.get("/:id", async (req, res) => {
 
 router.patch("/:id", authMiddleware, async (req, res) => {
   try {
-    // 1. Prepare the update data from the request body
+   
     const { description, photo, resolved } = req.body;
     const updateData = {};
     if (description !== undefined) updateData.description = description;
     if (photo !== undefined) updateData.photo = photo;
     if (resolved !== undefined) updateData.resolved = resolved;
 
-    // 2. Perform the update AND populate in one go
-    // 'new: true' returns the document AFTER the fix is applied
+   
     const updatedIssue = await Issue.findOneAndUpdate(
-      { _id: req.params.id, createdBy: req.userId }, // Only update if it belongs to the user
+      { _id: req.params.id, createdBy: req.userId }, 
       { $set: updateData },
       { new: true }
     ).populate("createdBy", "username");
@@ -245,46 +242,86 @@ router.patch("/:id", authMiddleware, async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
-router.post(
-  "/",
-  authMiddleware,
-  upload.single("photo"),   
-  async (req, res) => {
-    try {
-      const description = req.body.description;
-      const location = req.body.location;
+// router.post(
+//   "/",
+//   authMiddleware,
+//   upload.single("photo"),   
+//   async (req, res) => {
+//     try {
+//       const description = req.body.description;
+//       const location = req.body.location;
 
-      if (!description || description.trim().length < 5) {
-        return res.status(400).json({
-          message: "Description must be at least 5 characters"
-        });
-      }
+//       if (!description || description.trim().length < 5) {
+//         return res.status(400).json({
+//           message: "Description must be at least 5 characters"
+//         });
+//       }
 
-      if (!location) {
-        return res.status(400).json({ message: "Location required" });
-      }
+//       if (!location) {
+//         return res.status(400).json({ message: "Location required" });
+//       }
 
-      let imageUrl = "";
-      if (req.file) {
-        const result = await cloudinary.uploader.upload(req.file.path);
-        imageUrl = result.secure_url;
-      }
+//       let imageUrl = "";
+//       if (req.file) {
+//         const result = await cloudinary.uploader.upload(req.file.path);
+//         imageUrl = result.secure_url;
+//       }
 
-      const newIssue = new Issue({
-        description,
-        location,
-        photo: imageUrl,
-        createdBy: req.userId
-      });
+//       const newIssue = new Issue({
+//         description,
+//         location,
+//         photo: imageUrl,
+//         createdBy: req.userId
+//       });
 
-      const savedIssue = await newIssue.save();
-      res.status(201).json(savedIssue);
+//       const savedIssue = await newIssue.save();
+//       res.status(201).json(savedIssue);
 
-    } catch (err) {
-      res.status(500).json({ error: err.message });
+//     } catch (err) {
+//       res.status(500).json({ error: err.message });
+//     }
+//   }
+// ); 
+router.post("/", authMiddleware, upload.single("photo"), async (req, res) => {
+  try {
+    const { description, location } = req.body;
+
+    if (!description || description.trim().length < 5) {
+      return res.status(400).json({ message: "Description too short" });
     }
+
+    let imageUrl = "";
+
+    if (req.file) {
+      const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { folder: "crowdfix_issues" }, 
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        
+        uploadStream.end(req.file.buffer); 
+      });
+      imageUrl = result.secure_url;
+    }
+
+    const newIssue = new Issue({
+      description,
+      location,
+      photo: imageUrl,
+      createdBy: req.userId
+    });
+
+    const savedIssue = await newIssue.save();
+    res.status(201).json(savedIssue);
+
+  } catch (err) {
+    console.error("RENDER ERROR:", err); 
+    res.status(500).json({ error: err.message });
   }
-);
+});
 
 router.delete("/:id/comments/:commentId", authMiddleware, async (req, res) => {
   try {
