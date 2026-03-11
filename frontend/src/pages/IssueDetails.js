@@ -156,10 +156,10 @@ function IssueDetails() {
         {issue.photo && <img src={issue.photo} alt="issue" style={styles.mainImage} />}
 
         <div style={styles.actions}>
-          <button onClick={handleUpvote} style={styles.upvoteBtn}>
+          {/* <button onClick={handleUpvote} style={styles.upvoteBtn}>
             👍 {issue.upvotes?.length || 0} Upvotes
-          </button>
-          <span style={styles.commentCount}>💬 {comments.length} Comments</span>
+          </button> */}
+          {/* <span style={styles.commentCount}>💬 {comments.length} Comments</span> */}
         </div>
       </div>
 
