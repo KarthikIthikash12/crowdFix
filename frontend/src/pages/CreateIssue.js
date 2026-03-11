@@ -38,10 +38,6 @@ function CreateIssue() {
         setLoading(false);
         return;
       }
-      if (!req.file) {
-        return res.status(400).json({ message: "A photo is required to report an issue! 📸" });
-      }
-
       const formData = new FormData();
       formData.append("description", description);
       formData.append("location", location);
