@@ -15,58 +15,54 @@ function Sidebar() {
   const isMobile = width <= 768;
 
   return (
-    <div style={getSidebarStyles(isMobile)}>
-      <div style={getSectionStyle(isMobile)}>
-        {!isMobile && <p style={styles.sectionTitle}>FEEDS</p>}
-        
-        <Link to="/" style={styles.navItem(isActive("/"), isMobile)}>
-          <span style={styles.icon(isMobile)}>🏠</span> 
-          {!isMobile && "Home"}
-        </Link>
 
-        <Link to="/issues/my" style={styles.navItem(isActive("/issues/my"), isMobile)}>
-          <span style={styles.icon(isMobile)}>👤</span> 
-          {!isMobile && "My Issues"}
-        </Link>
-        
-        <Link to="/create" style={styles.navItem(isActive("/create"), isMobile)}>
-          <span style={styles.icon(isMobile)}>➕</span> 
-          {!isMobile && "Create New"}
-        </Link>
-      </div>
+    <div style={getSidebarStyles(isMobile)}>
+      
+      {!isMobile && <p style={styles.sectionTitle}>FEEDS</p>}
+      
+      <Link to="/" style={styles.navItem(isActive("/"), isMobile)}>
+        <span style={styles.icon(isMobile)}>🏠</span> 
+        {!isMobile && "Home"}
+      </Link>
+
+      <Link to="/issues/my" style={styles.navItem(isActive("/issues/my"), isMobile)}>
+        <span style={styles.icon(isMobile)}>👤</span> 
+        {!isMobile && "My Issues"}
+      </Link>
+      
+      <Link to="/create" style={styles.navItem(isActive("/create"), isMobile)}>
+        <span style={styles.icon(isMobile)}>➕</span> 
+        {!isMobile && "Create New"}
+      </Link>
 
       {!isMobile && <div style={styles.divider} />}
+      {!isMobile && <p style={styles.sectionTitle}>RESOURCES</p>}
 
-      <div style={getSectionStyle(isMobile)}>
-        {!isMobile && <p style={styles.sectionTitle}>RESOURCES</p>}
-        
-        <Link to="/about" style={styles.navItem(isActive("/about"), isMobile)}>
-          <span style={styles.icon(isMobile)}>ℹ️</span> 
-          {!isMobile && "About"}
-        </Link>
+      <Link to="/about" style={styles.navItem(isActive("/about"), isMobile)}>
+        <span style={styles.icon(isMobile)}>ℹ️</span> 
+        {!isMobile && "About CrowdFix"}
+      </Link>
 
-        <Link to="/developer" style={styles.navItem(isActive("/developer"), isMobile)}>
-          <span style={styles.icon(isMobile)}>👨‍💻</span> 
-          {!isMobile && "Dev"}
-        </Link>
+      <Link to="/developer" style={styles.navItem(isActive("/developer"), isMobile)}>
+        <span style={styles.icon(isMobile)}>👨‍💻</span> 
+        {!isMobile && "About Developer"}
+      </Link>
 
-        <Link to="/help" style={styles.navItem(isActive("/help"), isMobile)}>
-          <span style={styles.icon(isMobile)}>❓</span> 
-          {!isMobile && "Help"}
-        </Link>
-      </div>
+      <Link to="/help" style={styles.navItem(isActive("/help"), isMobile)}>
+        <span style={styles.icon(isMobile)}>❓</span> 
+        {!isMobile && "Help Center"}
+      </Link>
 
       {!isMobile && (
         <div style={styles.sidebarFooter}>
           <div style={styles.legalBox}>
-            <p>© 2026 CrowdFix</p>
+            <p>© 2026 CrowdFix Inc.</p>
           </div>
         </div>
       )}
     </div>
   );
 }
-
 
 const getSidebarStyles = (isMobile) => ({
   width: isMobile ? "100%" : "260px",
@@ -78,22 +74,15 @@ const getSidebarStyles = (isMobile) => ({
   right: 0,
   display: "flex",
   flexDirection: isMobile ? "row" : "column",
-  padding: isMobile ? "0 5px" : "24px 16px",
+  
+  padding: isMobile ? "0" : "24px 16px",
   background: "#ffffff",
   borderTop: isMobile ? "1px solid #e2e8f0" : "none",
   borderRight: isMobile ? "none" : "1px solid #e2e8f0",
   justifyContent: isMobile ? "space-around" : "flex-start",
-  alignItems: isMobile ? "center" : "stretch",
+  alignItems: "center",
   zIndex: 9999,
   boxShadow: isMobile ? "0 -4px 12px rgba(0,0,0,0.08)" : "none",
-});
-
-const getSectionStyle = (isMobile) => ({
-  display: "flex",
-  flexDirection: isMobile ? "row" : "column",
-  gap: isMobile ? "2px" : "6px",
-  width: isMobile ? "auto" : "100%",
-  justifyContent: "space-around",
 });
 
 const styles = {
@@ -103,12 +92,13 @@ const styles = {
     flexDirection: isMobile ? "column" : "row",
     alignItems: "center",
     textDecoration: "none",
-    padding: isMobile ? "10px 5px" : "12px 16px",
-    borderRadius: "14px",
+    flex: isMobile ? 1 : "initial",
+    padding: isMobile ? "10px 0" : "12px 16px",
+    borderRadius: isMobile ? "0" : "14px",
     fontSize: isMobile ? "10px" : "14px",
     fontWeight: active ? "700" : "500",
     color: active ? "#6366f1" : "#475569", 
-    background: active ? "#6366f110" : "transparent",
+    background: active && !isMobile ? "#6366f110" : "transparent",
     transition: "all 0.2s ease",
   }),
   icon: (isMobile) => ({
@@ -116,6 +106,8 @@ const styles = {
     fontSize: isMobile ? "22px" : "18px",
     display: "flex",
     justifyContent: "center",
+
+    opacity: 1,
   }),
   divider: { height: "1px", background: "#e2e8f0", margin: "24px 12px" },
   sidebarFooter: { marginTop: "auto", paddingTop: "20px" },
