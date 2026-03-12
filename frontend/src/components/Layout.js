@@ -94,39 +94,58 @@ function Layout({ children }) {
   //   </div>
   // ); 
   return (
-  <div style={styles.app} className="app-container">
+  <div style={{ ...styles.app, display: "flex", flexDirection: "column" }} className="app-container">
     <Navbar />
 
+    {/* This container holds Sidebar, Content, and TrendingPanel */}
     <div 
-      className="body-container"
-      style={{
-        ...styles.body, 
-        flexDirection: isMobile ? "column" : "row",
-        display: "flex" 
+      className="body-wrapper" 
+      style={{ 
+        display: "flex", 
+        flexDirection: isMobile ? "column" : "row", // Desktop stays row, Mobile stacks
+        width: "100%",
+        minHeight: "100vh"
       }}
     >
-      {/* 1. SIDEBAR: No wrapper needed, it handles itself */}
+      
+      {/* 1. SIDEBAR: It handles its own fixed/sticky logic */}
       <Sidebar />
 
-      {/* 2. MAIN CONTENT */}
-      <div 
-        className="content-container"
+      {/* 2. MAIN CONTENT: We adjust margins based on desktop/mobile */}
+      <main 
         style={{
-          ...styles.content,
-          marginLeft: isMobile ? 0 : "260px", // Match your sidebar width
-          paddingBottom: isMobile ? "90px" : "0", // Space for bottom bar
           flex: 1,
-          width: "100%"
+          marginLeft: isMobile ? "0" : "20px", // Adds gap between sidebar and feed on desktop
+          paddingBottom: isMobile ? "90px" : "20px", 
+          paddingTop: "20px",
+          display: "flex",
+          justifyContent: "center" // Keeps the feed centered on desktop
         }}
       >
-        {children}
-      </div>
-
-      {/* 3. RIGHT PANEL */}
-      {!isMobile && (
-        <div className="rightbar-container" style={styles.rightbar}>
-          <TrendingPanel />
+        <div 
+          style={{ 
+            width: "100%", 
+            maxWidth: isMobile ? "100%" : "700px", // Prevents the feed from stretching too wide on desktop
+            margin: "0 auto" 
+          }}
+        >
+          {children}
         </div>
+      </main>
+
+      {/* 3. TRENDING PANEL: Only for Desktop */}
+      {!isMobile && (
+        <aside 
+          style={{ 
+            width: "350px", 
+            padding: "20px",
+            position: "sticky",
+            top: "0",
+            height: "fit-content"
+          }}
+        >
+          <TrendingPanel />
+        </aside>
       )}
     </div>
 
