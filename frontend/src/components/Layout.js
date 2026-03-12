@@ -1,37 +1,5 @@
-// import Navbar from "./Navbar";
-// import Sidebar from "./Sidebar";
-// import TrendingPanel from "./TrendingPanel";
-// import FloatingCreateButton from "./FloatingCreateButton";
-// import { layoutStyles as styles } from "../styles/layoutStyles";
 
-// function Layout({ children }) {
-//   return (
-//     <div style={styles.app} className="app-container">
-//       <Navbar />
-
-//       <div style={styles.body} className="body-container">
-
-//         <div className="sidebar-container" style={styles.sidebar}>
-//            <Sidebar />
-//         </div>
-
-//         <div style={styles.content} className="content-container">
-//           {children}
-//         </div>
-
-//         <div className="rightbar-container" style={styles.rightbar}>
-//            <TrendingPanel />
-//         </div>
-//       </div>
-
-//       <FloatingCreateButton />
-//     </div>
-//   );
-// }
- 
-// export default Layout; 
-
-import React, { useState, useEffect } from "react"; // Added hooks
+import React, { useState, useEffect } from "react"; 
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import TrendingPanel from "./TrendingPanel";
@@ -39,7 +7,6 @@ import FloatingCreateButton from "./FloatingCreateButton";
 import { layoutStyles as styles } from "../styles/layoutStyles";
 
 function Layout({ children }) {
-  // 1. Monitor screen width
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -48,11 +15,10 @@ function Layout({ children }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 2. Define overrides for Mobile
   const mobileContentStyle = isMobile ? {
     marginLeft: 0,
     marginRight: 0,
-    paddingBottom: "80px", // Space so the bar doesn't cover content
+    paddingBottom: "80px", 
     width: "100%"
   } : {};
 
@@ -65,67 +31,36 @@ function Layout({ children }) {
     zIndex: 2000
   } : {};
 
-  // return (
-  //   <div style={styles.app} className="app-container">
-  //     <Navbar />
-
-  //     <div style={{...styles.body, flexDirection: isMobile ? "column" : "row"}} className="body-container">
-        
-  //       {/* Sidebar Wrapper */}
-  //       <div className="sidebar-container" style={{...styles.sidebar, ...mobileSidebarWrapper}}>
-  //          <Sidebar />
-  //       </div>
-
-  //       {/* Main Content Wrapper */}
-  //       <div style={{...styles.content, ...mobileContentStyle}} className="content-container">
-  //         {children}
-  //       </div>
-
-  //       {/* Hide Trending Panel on Mobile to save space (Optional) */}
-  //       {!isMobile && (
-  //         <div className="rightbar-container" style={styles.rightbar}>
-  //            <TrendingPanel />
-  //         </div>
-  //       )}
-  //     </div>
-
-  //     {/* Hide floating button on mobile if it's already in your Bottom Sidebar */}
-  //     {!isMobile && <FloatingCreateButton />}
-  //   </div>
-  // ); 
   return (
   <div style={{ ...styles.app, display: "flex", flexDirection: "column" }} className="app-container">
     <Navbar />
 
-    {/* This container holds Sidebar, Content, and TrendingPanel */}
     <div 
       className="body-wrapper" 
       style={{ 
         display: "flex", 
-        flexDirection: isMobile ? "column" : "row", // Desktop stays row, Mobile stacks
+        flexDirection: isMobile ? "column" : "row", 
         width: "100%",
         minHeight: "100vh"
       }}
     >
       
-      {/* 1. SIDEBAR: It handles its own fixed/sticky logic */}
       <Sidebar />
 
-      {/* 2. MAIN CONTENT: We adjust margins based on desktop/mobile */}
       <main 
         style={{
           flex: 1,
-          marginLeft: isMobile ? "0" : "20px", // Adds gap between sidebar and feed on desktop
+          marginLeft: isMobile ? "0" : "20px", 
           paddingBottom: isMobile ? "90px" : "20px", 
           paddingTop: "20px",
           display: "flex",
-          justifyContent: "center" // Keeps the feed centered on desktop
+          justifyContent: "center" 
         }}
       >
         <div 
           style={{ 
             width: "100%", 
-            maxWidth: isMobile ? "100%" : "700px", // Prevents the feed from stretching too wide on desktop
+            maxWidth: isMobile ? "100%" : "700px", 
             margin: "0 auto" 
           }}
         >
@@ -133,7 +68,6 @@ function Layout({ children }) {
         </div>
       </main>
 
-      {/* 3. TRENDING PANEL: Only for Desktop */}
       {!isMobile && (
         <aside 
           style={{ 
