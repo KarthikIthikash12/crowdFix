@@ -198,24 +198,23 @@ function Sidebar() {
   }, []);
 
   const sidebarStyle = {
-    width: isMobile ? "100%" : "260px",
-    height: isMobile ? "65px" : "100vh",
-    position: isMobile ? "fixed" : "sticky",
-    bottom: isMobile ? "0" : "auto",
-    top: isMobile ? "auto" : "0",
-    left: "0",
-    display: "flex",
-    flexDirection: isMobile ? "row" : "column",
-    padding: isMobile ? "0 10px" : "5px 16px",
-    background: isMobile ? "#ffffff" : "rgba(255, 255, 255, 0.9)",
-    backdropFilter: isMobile ? "none" : "blur(10px)",
-    borderRight: isMobile ? "none" : "1px solid #e2e8f0",
-    borderTop: isMobile ? "1px solid #e2e8f0" : "none",
-    justifyContent: isMobile ? "space-around" : "flex-start",
-    alignItems: isMobile ? "center" : "stretch",
-    zIndex: 1000,
-    transition: "all 0.3s ease",
-  };
+  width: isMobile ? "100%" : "260px",
+  height: isMobile ? "70px" : "100vh", // Increased height slightly for better thumb reach
+  position: isMobile ? "fixed" : "sticky",
+  bottom: isMobile ? "0" : "auto",
+  top: isMobile ? "auto" : "0",
+  left: 0,
+  right: 0, // ADD THIS
+  display: "flex",
+  flexDirection: isMobile ? "row" : "column",
+  padding: isMobile ? "0 10px" : "5px 16px",
+  background: "#ffffff", // Solid white for mobile so it pops
+  borderTop: isMobile ? "1px solid #e2e8f0" : "none",
+  justifyContent: isMobile ? "space-around" : "flex-start",
+  alignItems: "center",
+  zIndex: 9999, // BOOST THIS to stay above everything
+  boxShadow: isMobile ? "0 -2px 10px rgba(0,0,0,0.1)" : "none",
+};
 
   return (
     <div style={sidebarStyle}>

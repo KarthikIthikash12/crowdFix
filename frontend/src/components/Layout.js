@@ -65,34 +65,74 @@ function Layout({ children }) {
     zIndex: 2000
   } : {};
 
-  return (
-    <div style={styles.app} className="app-container">
-      <Navbar />
+  // return (
+  //   <div style={styles.app} className="app-container">
+  //     <Navbar />
 
-      <div style={{...styles.body, flexDirection: isMobile ? "column" : "row"}} className="body-container">
+  //     <div style={{...styles.body, flexDirection: isMobile ? "column" : "row"}} className="body-container">
         
-        {/* Sidebar Wrapper */}
-        <div className="sidebar-container" style={{...styles.sidebar, ...mobileSidebarWrapper}}>
-           <Sidebar />
-        </div>
+  //       {/* Sidebar Wrapper */}
+  //       <div className="sidebar-container" style={{...styles.sidebar, ...mobileSidebarWrapper}}>
+  //          <Sidebar />
+  //       </div>
 
-        {/* Main Content Wrapper */}
-        <div style={{...styles.content, ...mobileContentStyle}} className="content-container">
-          {children}
-        </div>
+  //       {/* Main Content Wrapper */}
+  //       <div style={{...styles.content, ...mobileContentStyle}} className="content-container">
+  //         {children}
+  //       </div>
 
-        {/* Hide Trending Panel on Mobile to save space (Optional) */}
-        {!isMobile && (
-          <div className="rightbar-container" style={styles.rightbar}>
-             <TrendingPanel />
-          </div>
-        )}
+  //       {/* Hide Trending Panel on Mobile to save space (Optional) */}
+  //       {!isMobile && (
+  //         <div className="rightbar-container" style={styles.rightbar}>
+  //            <TrendingPanel />
+  //         </div>
+  //       )}
+  //     </div>
+
+  //     {/* Hide floating button on mobile if it's already in your Bottom Sidebar */}
+  //     {!isMobile && <FloatingCreateButton />}
+  //   </div>
+  // ); 
+  return (
+  <div style={styles.app} className="app-container">
+    <Navbar />
+
+    <div 
+      className="body-container"
+      style={{
+        ...styles.body, 
+        flexDirection: isMobile ? "column" : "row",
+        display: "flex" 
+      }}
+    >
+      {/* 1. SIDEBAR: No wrapper needed, it handles itself */}
+      <Sidebar />
+
+      {/* 2. MAIN CONTENT */}
+      <div 
+        className="content-container"
+        style={{
+          ...styles.content,
+          marginLeft: isMobile ? 0 : "260px", // Match your sidebar width
+          paddingBottom: isMobile ? "90px" : "0", // Space for bottom bar
+          flex: 1,
+          width: "100%"
+        }}
+      >
+        {children}
       </div>
 
-      {/* Hide floating button on mobile if it's already in your Bottom Sidebar */}
-      {!isMobile && <FloatingCreateButton />}
+      {/* 3. RIGHT PANEL */}
+      {!isMobile && (
+        <div className="rightbar-container" style={styles.rightbar}>
+          <TrendingPanel />
+        </div>
+      )}
     </div>
-  );
+
+    {!isMobile && <FloatingCreateButton />}
+  </div>
+);
 }
 
 export default Layout;
